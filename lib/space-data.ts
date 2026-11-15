@@ -38,6 +38,8 @@ export const MISSIONS = [
     alt: 'Astronaut footprints and a flag on grey lunar soil with Earth on the horizon',
     glow: '131,183,255',
     accent: '#83B7FF',
+    href: '/moon',
+    cta: 'Enter the Moon',
   },
   {
     id: 'mars',
@@ -50,6 +52,8 @@ export const MISSIONS = [
     alt: 'A rover on the rust-red dusty plains of Mars under a hazy orange sky',
     glow: '233,149,112',
     accent: '#E99570',
+    href: '/mars',
+    cta: 'Enter Mars',
   },
   {
     id: 'relics',
@@ -62,5 +66,7 @@ export const MISSIONS = [
     alt: 'An abandoned lander half buried in dust under a deep violet sky',
     glow: '154,128,214',
     accent: '#9A80D6',
+    href: '/missions',
+    cta: 'Open the archive',
   },
 ] as const

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Launch Lab · Build it, launch it</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css?v=10">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div id="stage"></div>
+
+<header class="top">
+  <div class="brand"><span class="logo">🚀</span>Launch Lab</div>
+  <ol class="steps" id="steps">
+    <li data-m="build" class="on"><b>1</b>Build</li>
+    <li data-m="site"><b>2</b>Launch site</li>
+    <li data-m="flight"><b>3</b>Launch</li>
+  </ol>
+  <a class="navlink" href="planets/" title="Explore the Moon and Mars in 3D">🌕 Planet Explorer</a>
+  <button class="iconbtn" id="mute" title="Sound on/off">🔊</button>
+</header>
+
+<!-- BUILD -->
+<aside class="panel left" id="palette" data-for="build">
+  <h3>Parts</h3>
+  <p class="hint">Tap a part to stack it on top, or drag it onto the rocket.</p>
+  <div id="parts"></div>
+</aside>
+<aside class="panel right" id="stats" data-for="build">
+  <div class="mission" id="mission"></div>
+  <div class="kpis" id="kpis"></div>
+  <h3>Your rocket <small>(top → bottom)</small></h3>
+  <ol id="stack"></ol>
+  <div class="row">
+    <button class="ghost" id="clear">Clear</button>
+    <button class="ghost" id="sample">Load a sample ▾</button>
+    <button class="ghost" id="hint">💡 Hint</button>
+  </div>
+  <div class="menu" id="samples" hidden>
+    <button data-s="good">Working Earth-orbit rocket</button>
+    <button data-s="moon">Moon rocket (3 stages)</button>
+    <button data-s="mars">Mars rocket (3 stages, 3 boosters)</button>
+    <button data-s="broken">Broken rocket: can you fix it?</button>
+  </div>
+  <p class="hinttext" id="hinttext" hidden></p>
+</aside>
+<div class="cta" data-for="build"><button class="primary" id="toSite" disabled>Next: choose launch site →</button></div>
+
+<!-- SITE -->
+<aside class="panel right" id="sitecard" data-for="site" hidden></aside>
+<div class="cta" data-for="site" hidden><button class="ghost" id="backBuild">← Back to building</button><button class="primary" id="toLaunch" disabled>🚀 Go to the launch pad</button></div>
+
+<!-- FLIGHT -->
+<div class="hud" id="hud" data-for="flight" hidden>
+  <div class="t" id="tclock">T−10</div><div class="rate" id="hrate">▶ real time</div>
+  <div class="g"><div><small>Altitude</small><b id="halt">0 km</b></div><div><small>Velocity</small><b id="hspd">0 km/s</b></div><div><small>Stage</small><b id="hstg">1</b></div></div>
+  <div class="ev" id="hev"></div>
+</div>
+<div class="milestones" id="milestones" data-for="flight" hidden></div>
+<div class="cta" data-for="flight" hidden id="launchcta"><button class="primary big" id="launchBtn">🔥 LAUNCH</button></div>
+<div class="result" id="result" hidden></div>
+
+<div class="toast" id="toast" hidden></div>
+<script type="module" src="game.js?v=17"></script>
+</body>
+</html>

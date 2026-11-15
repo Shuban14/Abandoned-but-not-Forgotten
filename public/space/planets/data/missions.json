@@ -1,0 +1,469 @@
+{
+ "_note": "Landing coordinates in degrees (lat, lon east, -180..180). Orbit values are approximate and only used to draw illustrative orbits, not live positions. Status as known in mid-2025; verify before publishing. 'approx': coordinates rounded / approximate. hid = JPL Horizons spacecraft ID used for live positions; periodH = approximate orbital period in hours (sets how much of the orbit to fetch).",
+ "moon": {
+  "radiusKm": 1737.4,
+  "landings": [
+   {
+    "name": "Apollo 11",
+    "agency": "NASA",
+    "year": 1969,
+    "lat": 0.674,
+    "lon": 23.473,
+    "kind": "Crewed landing",
+    "wiki": "Apollo 11"
+   },
+   {
+    "name": "Apollo 12",
+    "agency": "NASA",
+    "year": 1969,
+    "lat": -3.012,
+    "lon": -23.422,
+    "kind": "Crewed landing",
+    "wiki": "Apollo 12"
+   },
+   {
+    "name": "Apollo 14",
+    "agency": "NASA",
+    "year": 1971,
+    "lat": -3.645,
+    "lon": -17.471,
+    "kind": "Crewed landing",
+    "wiki": "Apollo 14"
+   },
+   {
+    "name": "Apollo 15",
+    "agency": "NASA",
+    "year": 1971,
+    "lat": 26.132,
+    "lon": 3.634,
+    "kind": "Crewed landing",
+    "wiki": "Apollo 15"
+   },
+   {
+    "name": "Apollo 16",
+    "agency": "NASA",
+    "year": 1972,
+    "lat": -8.973,
+    "lon": 15.5,
+    "kind": "Crewed landing",
+    "wiki": "Apollo 16"
+   },
+   {
+    "name": "Apollo 17",
+    "agency": "NASA",
+    "year": 1972,
+    "lat": 20.191,
+    "lon": 30.772,
+    "kind": "Crewed landing",
+    "wiki": "Apollo 17"
+   },
+   {
+    "name": "Luna 9",
+    "agency": "USSR",
+    "year": 1966,
+    "lat": 7.08,
+    "lon": -64.37,
+    "kind": "First soft landing",
+    "wiki": "Luna 9"
+   },
+   {
+    "name": "Luna 16",
+    "agency": "USSR",
+    "year": 1970,
+    "lat": -0.513,
+    "lon": 56.364,
+    "kind": "Sample return",
+    "wiki": "Luna 16"
+   },
+   {
+    "name": "Lunokhod 1 (Luna 17)",
+    "agency": "USSR",
+    "year": 1970,
+    "lat": 38.24,
+    "lon": -35.0,
+    "kind": "Rover",
+    "wiki": "Lunokhod 1"
+   },
+   {
+    "name": "Lunokhod 2 (Luna 21)",
+    "agency": "USSR",
+    "year": 1973,
+    "lat": 25.85,
+    "lon": 30.45,
+    "kind": "Rover",
+    "wiki": "Lunokhod 2"
+   },
+   {
+    "name": "Luna 24",
+    "agency": "USSR",
+    "year": 1976,
+    "lat": 12.714,
+    "lon": 62.213,
+    "kind": "Sample return",
+    "wiki": "Luna 24"
+   },
+   {
+    "name": "Surveyor 1",
+    "agency": "NASA",
+    "year": 1966,
+    "lat": -2.474,
+    "lon": -43.339,
+    "kind": "Lander",
+    "wiki": "Surveyor 1"
+   },
+   {
+    "name": "Surveyor 7",
+    "agency": "NASA",
+    "year": 1968,
+    "lat": -40.98,
+    "lon": -11.51,
+    "kind": "Lander",
+    "wiki": "Surveyor 7"
+   },
+   {
+    "name": "Chang'e 3 / Yutu",
+    "agency": "CNSA",
+    "year": 2013,
+    "lat": 44.12,
+    "lon": -19.51,
+    "kind": "Lander + rover",
+    "wiki": "Chang'e 3"
+   },
+   {
+    "name": "Chang'e 4 / Yutu-2",
+    "agency": "CNSA",
+    "year": 2019,
+    "lat": -45.444,
+    "lon": 177.588,
+    "kind": "First far-side landing",
+    "wiki": "Chang'e 4"
+   },
+   {
+    "name": "Chang'e 5",
+    "agency": "CNSA",
+    "year": 2020,
+    "lat": 43.06,
+    "lon": -51.92,
+    "kind": "Sample return",
+    "wiki": "Chang'e 5"
+   },
+   {
+    "name": "Chang'e 6",
+    "agency": "CNSA",
+    "year": 2024,
+    "lat": -41.64,
+    "lon": -153.99,
+    "kind": "Far-side sample return",
+    "wiki": "Chang'e 6",
+    "approx": true
+   },
+   {
+    "name": "Chandrayaan-3 (Vikram)",
+    "agency": "ISRO",
+    "year": 2023,
+    "lat": -69.373,
+    "lon": 32.319,
+    "kind": "First landing near south pole",
+    "wiki": "Chandrayaan-3"
+   },
+   {
+    "name": "SLIM",
+    "agency": "JAXA",
+    "year": 2024,
+    "lat": -13.316,
+    "lon": 25.251,
+    "kind": "Precision landing",
+    "wiki": "Smart Lander for Investigating Moon"
+   },
+   {
+    "name": "IM-1 Odysseus",
+    "agency": "Intuitive Machines / NASA CLPS",
+    "year": 2024,
+    "lat": -80.13,
+    "lon": 1.44,
+    "kind": "Commercial lander",
+    "wiki": "IM-1",
+    "approx": true
+   },
+   {
+    "name": "Blue Ghost M1",
+    "agency": "Firefly / NASA CLPS",
+    "year": 2025,
+    "lat": 18.56,
+    "lon": 61.81,
+    "kind": "Commercial lander",
+    "wiki": "Blue Ghost Mission 1",
+    "approx": true
+   }
+  ],
+  "orbiters": [
+   {
+    "name": "Lunar Reconnaissance Orbiter",
+    "agency": "NASA",
+    "since": 2009,
+    "altKm": 100,
+    "apoKm": 160,
+    "inc": 90,
+    "wiki": "Lunar Reconnaissance Orbiter",
+    "color": "#4fc3f7",
+    "hid": -85,
+    "periodH": 1.9
+   },
+   {
+    "name": "Chandrayaan-2 Orbiter",
+    "agency": "ISRO",
+    "since": 2019,
+    "altKm": 100,
+    "apoKm": 100,
+    "inc": 90,
+    "wiki": "Chandrayaan-2",
+    "color": "#ffb74d",
+    "hid": -152,
+    "periodH": 2.0
+   },
+   {
+    "name": "Danuri (KPLO)",
+    "agency": "KARI",
+    "since": 2022,
+    "altKm": 100,
+    "apoKm": 100,
+    "inc": 89,
+    "wiki": "Korea Pathfinder Lunar Orbiter",
+    "color": "#81c784",
+    "hid": -155,
+    "periodH": 2.0
+   },
+   {
+    "name": "Queqiao-2 (relay)",
+    "agency": "CNSA",
+    "since": 2024,
+    "altKm": 200,
+    "apoKm": 16000,
+    "inc": 55,
+    "wiki": "Queqiao-2",
+    "color": "#e57373"
+   },
+   {
+    "name": "ARTEMIS P1 / P2",
+    "agency": "NASA",
+    "since": 2011,
+    "altKm": 1000,
+    "apoKm": 18000,
+    "inc": 20,
+    "wiki": "THEMIS",
+    "color": "#ba68c8"
+   }
+  ]
+ },
+ "mars": {
+  "radiusKm": 3389.5,
+  "landings": [
+   {
+    "name": "Viking 1",
+    "agency": "NASA",
+    "year": 1976,
+    "lat": 22.27,
+    "lon": -47.95,
+    "kind": "First successful US lander",
+    "wiki": "Viking 1"
+   },
+   {
+    "name": "Viking 2",
+    "agency": "NASA",
+    "year": 1976,
+    "lat": 47.64,
+    "lon": 134.29,
+    "kind": "Lander",
+    "wiki": "Viking 2"
+   },
+   {
+    "name": "Mars Pathfinder / Sojourner",
+    "agency": "NASA",
+    "year": 1997,
+    "lat": 19.13,
+    "lon": -33.22,
+    "kind": "First rover",
+    "wiki": "Mars Pathfinder"
+   },
+   {
+    "name": "Spirit (MER-A)",
+    "agency": "NASA",
+    "year": 2004,
+    "lat": -14.568,
+    "lon": 175.473,
+    "kind": "Rover",
+    "wiki": "Spirit (rover)"
+   },
+   {
+    "name": "Opportunity (MER-B)",
+    "agency": "NASA",
+    "year": 2004,
+    "lat": -1.946,
+    "lon": -5.527,
+    "kind": "Rover",
+    "wiki": "Opportunity (rover)"
+   },
+   {
+    "name": "Phoenix",
+    "agency": "NASA",
+    "year": 2008,
+    "lat": 68.22,
+    "lon": -125.75,
+    "kind": "Polar lander",
+    "wiki": "Phoenix (spacecraft)"
+   },
+   {
+    "name": "Curiosity (MSL)",
+    "agency": "NASA",
+    "year": 2012,
+    "lat": -4.5895,
+    "lon": 137.4417,
+    "kind": "Rover (active)",
+    "wiki": "Curiosity (rover)"
+   },
+   {
+    "name": "InSight",
+    "agency": "NASA",
+    "year": 2018,
+    "lat": 4.502,
+    "lon": 135.623,
+    "kind": "Seismology lander",
+    "wiki": "InSight"
+   },
+   {
+    "name": "Perseverance + Ingenuity",
+    "agency": "NASA",
+    "year": 2021,
+    "lat": 18.4447,
+    "lon": 77.4508,
+    "kind": "Rover (active) + helicopter",
+    "wiki": "Perseverance (rover)"
+   },
+   {
+    "name": "Zhurong (Tianwen-1)",
+    "agency": "CNSA",
+    "year": 2021,
+    "lat": 25.066,
+    "lon": 109.925,
+    "kind": "Rover",
+    "wiki": "Zhurong (rover)"
+   },
+   {
+    "name": "Mars 3",
+    "agency": "USSR",
+    "year": 1971,
+    "lat": -45.0,
+    "lon": -158.0,
+    "kind": "First soft landing",
+    "wiki": "Mars 3",
+    "approx": true
+   },
+   {
+    "name": "Beagle 2",
+    "agency": "ESA / UK",
+    "year": 2003,
+    "lat": 11.53,
+    "lon": 90.43,
+    "kind": "Lander (found 2015)",
+    "wiki": "Beagle 2",
+    "approx": true
+   }
+  ],
+  "orbiters": [
+   {
+    "name": "2001 Mars Odyssey",
+    "agency": "NASA",
+    "since": 2001,
+    "altKm": 400,
+    "apoKm": 400,
+    "inc": 93,
+    "wiki": "2001 Mars Odyssey",
+    "color": "#4fc3f7",
+    "hid": -53,
+    "periodH": 2.0
+   },
+   {
+    "name": "Mars Express",
+    "agency": "ESA",
+    "since": 2003,
+    "altKm": 300,
+    "apoKm": 10000,
+    "inc": 86,
+    "wiki": "Mars Express",
+    "color": "#ffb74d",
+    "hid": -41,
+    "periodH": 7.0
+   },
+   {
+    "name": "Mars Reconnaissance Orbiter",
+    "agency": "NASA",
+    "since": 2006,
+    "altKm": 255,
+    "apoKm": 320,
+    "inc": 93,
+    "wiki": "Mars Reconnaissance Orbiter",
+    "color": "#81c784",
+    "hid": -74,
+    "periodH": 1.9
+   },
+   {
+    "name": "MAVEN",
+    "agency": "NASA",
+    "since": 2014,
+    "altKm": 150,
+    "apoKm": 6200,
+    "inc": 75,
+    "wiki": "MAVEN",
+    "color": "#e57373",
+    "hid": -202,
+    "periodH": 4.5
+   },
+   {
+    "name": "ExoMars Trace Gas Orbiter",
+    "agency": "ESA / Roscosmos",
+    "since": 2016,
+    "altKm": 400,
+    "apoKm": 400,
+    "inc": 74,
+    "wiki": "Trace Gas Orbiter",
+    "color": "#ba68c8",
+    "hid": -143,
+    "periodH": 2.0
+   },
+   {
+    "name": "Hope (Emirates Mars Mission)",
+    "agency": "UAE",
+    "since": 2021,
+    "altKm": 20000,
+    "apoKm": 43000,
+    "inc": 25,
+    "wiki": "Emirates Mars Mission",
+    "color": "#fff176",
+    "hid": -62,
+    "periodH": 55.0
+   },
+   {
+    "name": "Tianwen-1 Orbiter",
+    "agency": "CNSA",
+    "since": 2021,
+    "altKm": 265,
+    "apoKm": 10700,
+    "inc": 87,
+    "wiki": "Tianwen-1",
+    "color": "#f06292"
+   }
+  ],
+  "rovers": [
+   {
+    "id": "m20",
+    "name": "Perseverance",
+    "landing": "Perseverance + Ingenuity"
+   },
+   {
+    "id": "msl",
+    "name": "Curiosity",
+    "landing": "Curiosity (MSL)"
+   }
+  ]
+ }
+}

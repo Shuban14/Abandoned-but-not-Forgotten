@@ -1,0 +1,63 @@
+[hidden]{display:none!important}
+:root{--bg:#05070d;--panel:rgba(14,18,30,.92);--line:rgba(255,255,255,.12);--fg:#e9eef8;--muted:#9aa6bd;--accent:#6ea8ff;--warm:#ff8a5c}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font:15px/1.5 Inter,system-ui,sans-serif;overflow:hidden}
+#stage{position:fixed;inset:0}
+#stage canvas{display:block}
+.top{position:fixed;top:0;left:0;right:0;z-index:5;display:flex;gap:16px;align-items:center;padding:12px 18px;background:linear-gradient(180deg,rgba(5,7,13,.9),rgba(5,7,13,0))}
+.brand{font:700 19px "Space Grotesk",Inter,sans-serif;letter-spacing:.01em;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.brand .dot{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,#9ab 40%,#345)}
+.seg{display:flex;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--fg);font:600 14px Inter;padding:7px 16px;border-radius:999px;cursor:pointer}
+.seg button.on{background:var(--fg);color:#0b1020}
+.search{position:relative;flex:1;max-width:420px;margin-left:auto}
+.search input{width:100%;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--fg);font:14px Inter;outline:none}
+.search input:focus{border-color:var(--accent)}
+#results{position:absolute;top:44px;left:0;right:0;margin:0;padding:6px;list-style:none;background:var(--panel);border:1px solid var(--line);border-radius:14px;max-height:340px;overflow:auto;backdrop-filter:blur(10px)}
+#results li{padding:8px 10px;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;gap:10px}
+#results li:hover,#results li.act{background:rgba(255,255,255,.08)}
+#results small{color:var(--muted)}
+#loading{position:fixed;inset:0;display:grid;place-items:center;color:var(--muted);pointer-events:none;font-size:14px}
+.layers{position:fixed;left:16px;bottom:44px;z-index:4;display:grid;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-size:13.5px;backdrop-filter:blur(8px)}
+.layers input{accent-color:var(--accent);margin-right:6px}
+.hint{position:fixed;left:50%;transform:translateX(-50%);bottom:44px;z-index:3;background:rgba(14,18,30,.75);border:1px solid var(--line);padding:7px 14px;border-radius:999px;font-size:13px;color:var(--muted);white-space:nowrap}
+.hint b{color:var(--fg)}
+.credits{position:fixed;left:0;right:0;bottom:0;z-index:3;padding:8px 16px;font-size:11px;color:#6f7a90;text-align:center}
+#panel{position:fixed;top:68px;right:16px;bottom:44px;width:400px;max-width:calc(100vw - 32px);z-index:6;background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:auto;padding:20px 20px 24px;backdrop-filter:blur(12px)}
+#panel .close{position:sticky;top:0;float:right;border:0;background:rgba(255,255,255,.08);color:var(--fg);width:32px;height:32px;border-radius:50%;font-size:20px;cursor:pointer}
+.eyebrow{font:600 11px Inter;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+#panel h2{font:700 24px/1.2 "Space Grotesk",Inter;margin:6px 0 4px}
+.coords{font:13px ui-monospace,Menlo,monospace;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chip{font-size:12px;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--fg)}
+.sec{margin-top:18px}
+.sec h3{font:600 12px Inter;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.list{display:grid;gap:4px}
+.list button{display:flex;justify-content:space-between;gap:10px;text-align:left;width:100%;border:1px solid transparent;background:rgba(255,255,255,.04);color:var(--fg);padding:8px 10px;border-radius:10px;cursor:pointer;font:14px Inter}
+.list button:hover{border-color:var(--line);background:rgba(255,255,255,.08)}
+.list small{color:var(--muted);white-space:nowrap}
+.wiki{display:grid;gap:10px}.wiki img{width:100%;border-radius:12px;max-height:220px;object-fit:cover}
+.wiki p{margin:0;color:#d4dbea}
+.muted{color:var(--muted);font-size:13px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.gallery a{display:block;aspect-ratio:1;border-radius:8px;overflow:hidden;background:#111}
+.gallery img{width:100%;height:100%;object-fit:cover;transition:transform .2s}.gallery a:hover img{transform:scale(1.06)}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{color:var(--accent);text-decoration:none;font-size:13.5px;border:1px solid var(--line);padding:6px 10px;border-radius:10px}
+.links a:hover{border-color:var(--accent)}
+.label{font:600 11px Inter;color:#fff;text-shadow:0 1px 3px #000,0 0 6px #000;white-space:nowrap;pointer-events:none;opacity:.85}
+.label.site{color:#ffd27a}
+@media(max-width:760px){.brand{display:none}.top{flex-wrap:wrap}.search{max-width:none;flex-basis:100%}#panel{top:auto;height:55vh;width:auto;left:16px}.hint{display:none}.layers{bottom:36px}}
+
+.layers .slider{display:flex;align-items:center;gap:8px;margin-top:4px}.layers .slider input{width:96px;accent-color:var(--accent)}.layers .slider b{font-weight:600;min-width:28px}
+.badges{position:fixed;left:16px;top:64px;z-index:4;display:grid;gap:6px;justify-items:start}
+.badges span{font-size:12px;padding:5px 10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);color:var(--muted)}
+#livebadge{color:#8ef0a6}
+.linkbtn{border:1px solid var(--line);background:rgba(110,168,255,.12);color:var(--fg);font:600 13.5px Inter;padding:7px 12px;border-radius:10px;cursor:pointer}.linkbtn:hover{border-color:var(--accent)}
+.livebox{margin:10px 0;padding:10px 12px;border-radius:12px;background:rgba(110,240,140,.08);border:1px solid rgba(110,240,140,.3);font-size:13.5px;line-height:1.6}
+.livebox b{color:#8ef0a6}
+.chip.elev{background:rgba(255,192,77,.14);color:#ffd27a}
+.label.live{color:#b9f6ca}.label.rover{color:#7cf3ff}
+@media(max-width:760px){.badges{top:96px}}
+.navlink{font:600 13px Inter;color:var(--fg);text-decoration:none;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);white-space:nowrap}.navlink:hover{border-color:var(--accent)}
+@media(max-width:760px){.navlink{display:none}}

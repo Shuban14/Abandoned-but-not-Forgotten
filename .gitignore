@@ -18,6 +18,14 @@ yarn-error.log*
 
 # env files
 .env*
+!.env.example
+
+# local database + upstream cache
+/.data/
+/.cache/
+*.db
+*.db-wal
+*.db-shm
 
 # vercel
 .vercel
