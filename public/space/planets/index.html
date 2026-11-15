@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Planet Explorer · Moon &amp; Mars</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap">
+<link rel="stylesheet" href="styles.css?v=2">
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="dot"></span>Planet Explorer</div>
+  <a class="navlink" href="../" title="Build and launch a rocket">🚀 Launch Lab</a>
+  <div class="seg" role="tablist">
+    <button data-body="moon" class="on">🌕 Moon</button>
+    <button data-body="mars">🔴 Mars</button>
+  </div>
+  <div class="search">
+    <input id="q" placeholder="Search a crater, mountain or mission…" autocomplete="off" aria-label="Search">
+    <ul id="results" hidden></ul>
+  </div>
+</header>
+
+<div id="stage"></div>
+<div id="loading">Loading planet…</div>
+
+<div class="layers">
+  <label><input type="checkbox" id="lyLand" checked> Landing sites</label>
+  <label><input type="checkbox" id="lyOrb" checked> Orbiters</label>
+  <label><input type="checkbox" id="lyLab" checked> Feature names</label>
+  <label><input type="checkbox" id="lySpin"> Auto-rotate</label>
+  <label><input type="checkbox" id="ff"> Fast-forward orbits (×120)</label>
+  <label class="slider">Terrain height <input type="range" id="ex" min="1" max="15" step="1" value="6"> <b id="exv">6×</b></label>
+</div>
+<div class="badges"><span id="livebadge">Live orbits: loading…</span><span id="hdbadge" hidden></span></div>
+<div class="hint" id="hint">Drag to rotate · scroll to zoom (close up loads NASA HD imagery) · <b>click anywhere on the surface</b></div>
+
+<aside id="panel" hidden>
+  <button class="close" id="close" aria-label="Close">×</button>
+  <div id="pbody"></div>
+</aside>
+
+<footer class="credits">
+  Maps: NASA LRO/SVS, USGS Viking MDIM 2.1, NASA Trek · Elevation: LRO LOLA, MGS MOLA (PDS) · Names: USGS/IAU Gazetteer ·
+  Orbits: NASA JPL Horizons · Rovers: NASA/JPL · Descriptions: Wikipedia · Images: NASA Image and Video Library
+</footer>
+
+<script type="module" src="app.js?v=2"></script>
+</body>
+</html>

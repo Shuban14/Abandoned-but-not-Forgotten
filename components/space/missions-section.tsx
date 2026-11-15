@@ -3,6 +3,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRef } from 'react'
 import { MISSIONS } from '@/lib/space-data'
 
@@ -96,11 +97,16 @@ function MissionCard({ mission, index, reducedMotion }: { mission: Mission; inde
             className="mt-5 flex items-center gap-2 font-display text-[11px] font-medium uppercase tracking-[0.24em] transition-all duration-300 group-hover:gap-3"
             style={{ color: mission.accent }}
           >
-            Coming soon
+            {mission.cta}
             <ArrowUpRight className="size-3.5" />
           </div>
         </div>
       </div>
+      <Link
+        href={mission.href}
+        aria-label={`${mission.title} — ${mission.cta}`}
+        className="absolute inset-0 z-20 rounded-[1.75rem]"
+      />
     </motion.article>
   )
 }

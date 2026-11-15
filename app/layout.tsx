@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Caveat, Cormorant_Garamond, DM_Sans, Space_Grotesk } from 'next/font/google'
+import AppShell from '@/components/space/app-shell'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -59,7 +60,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${dmSans.variable} ${caveat.variable} ${cormorant.variable}`}
     >
       <body className="bg-void font-sans antialiased">
-        {children}
+        <AppShell>{children}</AppShell>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

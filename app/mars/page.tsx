@@ -1,11 +1,18 @@
 import type { Metadata } from 'next'
-import ComingSoon from '@/components/space/coming-soon'
+import ImmersiveFrame from '@/components/space/immersive-frame'
 
 export const metadata: Metadata = {
   title: 'The Red Planet — Space Relics',
-  description: 'The Mars exploration module is coming soon.',
+  description:
+    'Explore Mars in 3D: real Viking and MRO imagery, live rover tracks, every landing site, and the hardware still resting on the surface.',
 }
 
 export default function MarsPage() {
-  return <ComingSoon name="The Red Planet" tagline="Rust-red plains, patient rovers" tone="mars" />
+  return (
+    <ImmersiveFrame
+      src="/space/planets/index.html?body=mars"
+      title="Planet Explorer — Mars"
+      label="Mars"
+    />
+  )
 }
