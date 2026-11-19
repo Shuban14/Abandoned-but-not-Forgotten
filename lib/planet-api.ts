@@ -6,39 +6,79 @@
 // memory + disk cache with single-flight and stale-on-error fallback.
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { sharedRedis } from './redis'
 import type { PlanetId } from './types'
 
-const CACHE_DIR = path.join(process.cwd(), '.cache', 'planet-api')
 const DATA_FILE = path.join(process.cwd(), 'public', 'space', 'planets', 'data', 'missions.json')
 const UA = 'SpaceRelics/1.0 (educational viewer)'
 
+/**
+ * Caching for the public NASA/JPL proxies.
+ *
+ * Two layers, neither of them a filesystem:
+ *   • per-instance memory - instant, single-flight, dies with the container;
+ *   • Upstash Redis - shared by every function instance, with a long TTL so a
+ *     stale copy can still be served when the upstream is down.
+ *
+ * The previous `.cache/planet-api` disk cache is gone: a serverless container's
+ * disk is ephemeral, so a file there can never be treated as durable data.
+ * Session-specific mission records are never written here.
+ */
 type CacheEntry = { at: number; data: unknown }
 const mem = new Map<string, CacheEntry>()
 const inflight = new Map<string, Promise<unknown>>()
 
 export class UpstreamError extends Error {}
 
-function cacheFile(key: string) {
-  return path.join(CACHE_DIR, `${key.replace(/[^a-z0-9_-]/gi, '_')}.json`)
+const shared = sharedRedis()
+/** Shared copies outlive their freshness so a stale one can cover an outage. */
+const SHARED_STALE_SECONDS = 7 * 24 * 60 * 60
+
+function isEntry(value: unknown): value is CacheEntry {
+  return Boolean(value) && typeof value === 'object' && typeof (value as CacheEntry).at === 'number'
+}
+
+async function readShared(key: string): Promise<CacheEntry | null> {
+  if (!shared) return null
+  try {
+    const entry = await shared.get<CacheEntry>(`space-relics:planet:${key}`)
+    return isEntry(entry) ? entry : null
+  } catch {
+    return null
+  }
+}
+
+async function writeShared(key: string, entry: CacheEntry) {
+  if (!shared) return
+  try {
+    await shared.set(`space-relics:planet:${key}`, entry, { ex: SHARED_STALE_SECONDS })
+  } catch {
+    // Caching is an optimisation; never fail a request because Redis is down.
+  }
 }
 
 async function cached<T>(key: string, ttlMs: number, load: () => Promise<T>): Promise<T> {
   const now = Date.now()
   const hit = mem.get(key)
   if (hit && now - hit.at < ttlMs) return hit.data as T
+  // Single-flight: concurrent callers share one upstream request per instance.
   if (inflight.has(key)) return inflight.get(key) as Promise<T>
 
-  const file = cacheFile(key)
-  const task = (async () => {
+  const task: Promise<T> = (async () => {
     try {
+      const remote = await readShared(key)
+      if (remote && Date.now() - remote.at < ttlMs) {
+        mem.set(key, remote)
+        return remote.data as T
+      }
       const data = await load()
-      mem.set(key, { at: Date.now(), data })
-      await fs.mkdir(CACHE_DIR, { recursive: true })
-      await fs.writeFile(file, JSON.stringify({ at: Date.now(), data })).catch(() => {})
+      const entry = { at: Date.now(), data }
+      mem.set(key, entry)
+      await writeShared(key, entry)
       return data
     } catch (error) {
       // Upstream down: serve the last good copy rather than an error.
-      const stale = hit ? { data: hit.data } : await fs.readFile(file, 'utf8').then((t) => JSON.parse(t)).catch(() => null)
+      const stale = hit ?? (await readShared(key))
       if (stale?.data) return { ...(stale.data as Record<string, unknown>), stale: true } as unknown as T
       throw error
     } finally {

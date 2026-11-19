@@ -113,7 +113,13 @@ function MissionCard({ mission, index, reducedMotion }: { mission: Mission; inde
 
 export default function MissionsSection({ reducedMotion }: { reducedMotion: boolean }) {
   return (
-    <section id="missions" className="relative z-10 scroll-mt-4 px-5 pb-28 pt-28 sm:px-8 sm:pt-36">
+    // `overflow-x-clip` keeps the oversized background glow (120vw wide) from
+    // adding a horizontal scrollbar to the page on tablets and phones. `clip`
+    // rather than `hidden` so nothing becomes a nested scroll container.
+    <section
+      id="missions"
+      className="relative z-10 scroll-mt-4 overflow-x-clip px-5 pb-28 pt-28 sm:px-8 sm:pt-36"
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-void to-transparent"

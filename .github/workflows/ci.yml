@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [trial2, main]
+  pull_request:
+    branches: [trial2, main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      # `Lonch game/launch-lab` is a private repository, so it is cloned with a
+      # dedicated token. A missing token fails the job here, loudly, instead of
+      # letting the simulation tests be skipped and the run look green.
+      - uses: actions/checkout@v4
+
+      - name: Check SUBMODULE_TOKEN is configured
+        env:
+          SUBMODULE_TOKEN: ${{ secrets.SUBMODULE_TOKEN }}
+        run: |
+          if [ -z "$SUBMODULE_TOKEN" ]; then
+            echo "::error::SUBMODULE_TOKEN is not set, so the private launch-lab submodule cannot be cloned and npm run test:sim cannot run. Add a repository secret named SUBMODULE_TOKEN holding a fine-grained PAT with read-only Contents access to https://github.com/nagraajm/launch-lab, then re-run this workflow."
+            exit 1
+          fi
+
+      - name: Check out the launch-lab submodule
+        env:
+          SUBMODULE_TOKEN: ${{ secrets.SUBMODULE_TOKEN }}
+        run: |
+          git config --global url."https://x-access-token:${SUBMODULE_TOKEN}@github.com/nagraajm/launch-lab.git".insteadOf "https://github.com/nagraajm/launch-lab.git"
+          git submodule sync --recursive
+          git submodule update --init --recursive
+          test -f "Lonch game/launch-lab/test/sim.test.mjs"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run test:all
+      - run: npm run build

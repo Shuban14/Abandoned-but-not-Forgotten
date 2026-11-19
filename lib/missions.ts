@@ -1,8 +1,11 @@
 // Mission persistence + server-side validation.
+//
 // The browser is never trusted: every value is re-checked here before it is
-// written, and stored values are re-typed and rounded.
+// written, and stored values are re-typed and rounded. Every statement goes
+// through the Neon tagged-template helper, so values are always bound as
+// parameters — no SQL string concatenation anywhere in this file.
 import { randomUUID } from 'node:crypto'
-import { getDb } from './db'
+import { getSql } from './db'
 import type { MissionInput, MissionRecord, MissionTarget } from './types'
 
 /** Launch sites shipped by the game (`public/space/sim.js`). */
@@ -27,6 +30,7 @@ export type ValidationResult =
 const isNum = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v)
 const clampNum = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v))
 
+/** Field limits kept identical to the previous release. */
 export function validateMissionInput(raw: unknown): ValidationResult {
   const errors: string[] = []
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
@@ -35,7 +39,9 @@ export function validateMissionInput(raw: unknown): ValidationResult {
   const b = raw as Record<string, unknown>
 
   const siteId = typeof b.siteId === 'string' ? b.siteId : ''
-  if (!LAUNCH_SITES[siteId]) errors.push('siteId must be one of the known launch sites')
+  if (typeof b.siteId !== 'string' || b.siteId.length > 32 || !LAUNCH_SITES[siteId]) {
+    errors.push('siteId must be one of the known launch sites')
+  }
 
   const target = typeof b.target === 'string' ? (b.target as MissionTarget) : ('' as MissionTarget)
   if (!TARGETS.includes(target)) errors.push("target must be 'leo', 'moon' or 'mars'")
@@ -66,8 +72,8 @@ export function validateMissionInput(raw: unknown): ValidationResult {
 
   let failureCode: string | null = null
   if (b.failureCode !== undefined && b.failureCode !== null) {
-    if (typeof b.failureCode !== 'string' || b.failureCode.length > 48) {
-      errors.push('failureCode must be a string of at most 48 characters')
+    if (typeof b.failureCode !== 'string' || !/^[a-zA-Z0-9_-]{1,48}$/.test(b.failureCode)) {
+      errors.push('failureCode must be 1-48 letters, digits, dashes or underscores')
     } else failureCode = b.failureCode
   }
 
@@ -96,16 +102,16 @@ type Row = {
   site_id: string
   site_name: string
   target: string
-  success: number
-  partial: number
-  speed_budget_mps: number
-  required_speed_mps: number
-  twr: number
-  weight_t: number
-  stages: number
+  success: boolean
+  partial: boolean
+  speed_budget_mps: number | string
+  required_speed_mps: number | string
+  twr: number | string
+  weight_t: number | string
+  stages: number | string
   parts_json: string
   failure_code: string | null
-  created_at: string
+  created_at: string | Date
 }
 
 function toRecord(row: Row): MissionRecord {
@@ -116,13 +122,16 @@ function toRecord(row: Row): MissionRecord {
   } catch {
     parts = []
   }
+  const createdAt = row.created_at instanceof Date
+    ? row.created_at.toISOString()
+    : new Date(row.created_at).toISOString()
   return {
     id: row.id,
     siteId: row.site_id,
     siteName: row.site_name,
     target: row.target as MissionTarget,
-    success: row.success === 1,
-    partial: row.partial === 1,
+    success: row.success === true,
+    partial: row.partial === true,
     speedBudgetMps: Number(row.speed_budget_mps),
     requiredSpeedMps: Number(row.required_speed_mps),
     twr: Number(row.twr),
@@ -130,49 +139,39 @@ function toRecord(row: Row): MissionRecord {
     stages: Number(row.stages),
     parts,
     failureCode: row.failure_code,
-    createdAt: row.created_at,
+    createdAt,
   }
 }
 
-export function saveMission(sessionId: string, input: MissionInput): MissionRecord {
+export async function saveMission(sessionId: string, input: MissionInput): Promise<MissionRecord> {
+  const sql = await getSql()
   const id = randomUUID()
   const createdAt = new Date().toISOString()
-  getDb()
-    .prepare(
-      `INSERT INTO missions (
-         id, session_id, site_id, site_name, target, success, partial,
-         speed_budget_mps, required_speed_mps, twr, weight_t, stages,
-         parts_json, failure_code, created_at
-       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+  await sql`
+    INSERT INTO missions (
+      id, session_id, site_id, site_name, target, success, partial,
+      speed_budget_mps, required_speed_mps, twr, weight_t, stages,
+      parts_json, failure_code, created_at
+    ) VALUES (
+      ${id}, ${sessionId}, ${input.siteId}, ${LAUNCH_SITES[input.siteId]}, ${input.target},
+      ${input.success}, ${input.partial}, ${input.speedBudgetMps}, ${input.requiredSpeedMps},
+      ${input.twr}, ${input.weightT}, ${input.stages}, ${JSON.stringify(input.parts)},
+      ${input.failureCode ?? null}, ${createdAt}
     )
-    .run(
-      id,
-      sessionId,
-      input.siteId,
-      LAUNCH_SITES[input.siteId],
-      input.target,
-      input.success ? 1 : 0,
-      input.partial ? 1 : 0,
-      input.speedBudgetMps,
-      input.requiredSpeedMps,
-      input.twr,
-      input.weightT,
-      input.stages,
-      JSON.stringify(input.parts),
-      input.failureCode ?? null,
-      createdAt,
-    )
+  `
+
   return { ...input, id, siteName: LAUNCH_SITES[input.siteId], createdAt }
 }
 
-export function listMissions(sessionId: string, limit = 10): MissionRecord[] {
-  const rows = getDb()
-    .prepare('SELECT * FROM missions WHERE session_id = ? ORDER BY created_at DESC LIMIT ?')
-    .all(sessionId, limit) as Row[]
-  return rows.map(toRecord)
-}
-
-export function countMissions(): number {
-  const row = getDb().prepare('SELECT COUNT(*) AS n FROM missions').get() as { n: number } | undefined
-  return Number(row?.n ?? 0)
+export async function listMissions(sessionId: string, limit = 10): Promise<MissionRecord[]> {
+  const sql = await getSql()
+  const rows = await sql`
+    SELECT id, site_id, site_name, target, success, partial, speed_budget_mps,
+           required_speed_mps, twr, weight_t, stages, parts_json, failure_code, created_at
+    FROM missions
+    WHERE session_id = ${sessionId}
+    ORDER BY created_at DESC
+    LIMIT ${limit}
+  `
+  return (rows as Row[]).map(toRecord)
 }

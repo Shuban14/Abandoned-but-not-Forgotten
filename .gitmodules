@@ -1,0 +1,3 @@
+[submodule "Lonch game/launch-lab"]
+	path = Lonch game/launch-lab
+	url = https://github.com/nagraajm/launch-lab.git

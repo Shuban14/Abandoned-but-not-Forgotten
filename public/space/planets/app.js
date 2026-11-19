@@ -9,6 +9,16 @@ import { CSS2DRenderer, CSS2DObject } from "three/addons/renderers/CSS2DRenderer
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// External data (Wikipedia, NASA, JPL) may only reach href/src as http(s).
+// Anything else - javascript:, data:, vbscript: - falls back instead.
+const safeUrl = (value, fallback = "") => {
+  try {
+    const url = new URL(String(value ?? ""), location.href);
+    return /^https?:$/.test(url.protocol) ? url.href : fallback;
+  } catch {
+    return fallback;
+  }
+};
 const VER = "2"; // bump on every data change so browsers never mix old cached data with new code
 const API = "/api"; // served by the Space Relics Next backend
 const BODY = {
@@ -528,7 +538,7 @@ async function showRover(rv, fly) {
     if (my !== seq) return;
     const el = $("#gal");
     el.innerHTML = p.items.length
-      ? p.items.slice(0, 12).map((x) => `<a href="${esc(x.full || x.link)}" target="_blank" rel="noopener" title="Sol ${x.sol} · ${esc(x.camera)}"><img src="${esc(x.thumb)}" alt="Sol ${x.sol} ${esc(x.camera)}" loading="lazy"></a>`).join("")
+      ? p.items.slice(0, 12).map((x) => `<a href="${esc(safeUrl(x.full || x.link, "#"))}" target="_blank" rel="noopener" title="Sol ${esc(x.sol)} · ${esc(x.camera)}"><img src="${esc(safeUrl(x.thumb))}" alt="Sol ${esc(x.sol)} ${esc(x.camera)}" loading="lazy"></a>`).join("")
       : `<span class="muted">No photos returned.</span>`;
     $("#rvcredit").textContent = p.items.length ? `Sol ${p.items[0].sol} (taken ${new Date(p.items[0].taken).toUTCString().slice(5, 16)}) · ${p.credit}` : "";
   } catch {
@@ -587,7 +597,7 @@ function renderWiki(w) {
   const el = $("#wk");
   if (!el) return;
   el.innerHTML = w
-    ? `${w.img ? `<img src="${esc(w.img)}" alt="">` : ""}<p>${esc(w.text)}</p><a class="muted" href="${esc(w.url)}" target="_blank" rel="noopener">Read more on Wikipedia ↗</a>`
+    ? `${w.img ? `<img src="${esc(safeUrl(w.img))}" alt="">` : ""}<p>${esc(w.text)}</p><a class="muted" href="${esc(safeUrl(w.url, "#"))}" target="_blank" rel="noopener">Read more on Wikipedia ↗</a>`
     : `<p class="muted">No encyclopedia article found for this exact place. The USGS feature page has the official record.</p>`;
 }
 const imgCache = new Map();
@@ -606,7 +616,7 @@ function renderGallery(list, about) {
   if (!el) return;
   if (about) el.insertAdjacentHTML("beforebegin", `<p class="muted" style="margin:0 0 6px">No photos of this exact spot, showing nearby ${esc(about)}:</p>`);
   el.innerHTML = list.length
-    ? list.map((x) => `<a href="https://images.nasa.gov/details/${encodeURIComponent(x.id)}" target="_blank" rel="noopener" title="${esc(x.title)}"><img src="${esc(x.thumb)}" alt="${esc(x.title)}" loading="lazy"></a>`).join("")
+    ? list.map((x) => `<a href="https://images.nasa.gov/details/${encodeURIComponent(x.id)}" target="_blank" rel="noopener" title="${esc(x.title)}"><img src="${esc(safeUrl(x.thumb))}" alt="${esc(x.title)}" loading="lazy"></a>`).join("")
     : `<span class="muted">No NASA library images for this name.</span>`;
 }
 
